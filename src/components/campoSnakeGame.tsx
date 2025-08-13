@@ -7,6 +7,7 @@ export default function Campo() {
     [7, 8],
     [6, 8],
   ]);
+  const snakeRef = useRef<number[][]>([]);
   const [direçao, setDireçao] = useState("ArrowRight");
   const IntervalRef = useRef(direçao);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -14,6 +15,7 @@ export default function Campo() {
   const [localMaça, setLocalMaça] = useState<number[]>([]);
   const maçaRef = useRef<number[]>([]);
   const [quantM, setQuantM] = useState<number>(0);
+  const quantRef = useRef<number>(0);
 
   function desenharCampo(ctx: CanvasRenderingContext2D | null | undefined) {
     for (let y = 0; y < 15; y++) {
@@ -23,15 +25,23 @@ export default function Campo() {
       }
     }
   }
+
+  // useEffect(() => {
+  //   snakeRef.current = snakePosiçao;
+  // }, [snakePosiçao]);
+
   function desenharMaça(ctx: CanvasRenderingContext2D | null | undefined) {
     if (!ctx) return;
 
     if (!temMaça) {
       const x = Math.floor(Math.random() * 16);
       const y = Math.floor(Math.random() * 14);
-      setLocalMaça([x, y]);
+      snakeRef.current.forEach((p) => {
+        if (p[0] !== x && p[1] !== y) {
+          setLocalMaça([x, y]);
+        }
+      });
       setTemMaça(true);
-
       ctx.fillStyle = "red";
       ctx.fillRect(x * 20, y * 20, 20, 20);
     } else {
@@ -51,8 +61,16 @@ export default function Campo() {
   }
 
   useEffect(() => {
+    quantRef.current = quantM;
+  }, [quantM]);
+
+  useEffect(() => {
     maçaRef.current = localMaça;
   }, [localMaça]);
+
+  useEffect(() => {
+    IntervalRef.current = direçao;
+  }, [direçao]);
 
   useEffect(() => {
     const ctx = canvasRef.current?.getContext("2d");
@@ -74,10 +92,6 @@ export default function Campo() {
   }, []);
 
   useEffect(() => {
-    IntervalRef.current = direçao;
-  }, [direçao]);
-
-  useEffect(() => {
     let lastTime = 0;
     const velocidade = 200;
 
@@ -94,17 +108,23 @@ export default function Campo() {
           const m = maçaRef.current;
           const d = IntervalRef.current;
           const [x, y] = pos[0];
+          snakeRef.current = snakePosiçao;
           if (
-            pos[0][0] >= 16 ||
-            pos[0][0] <= 0 ||
-            pos[0][1] <= 0 ||
-            pos[0][1] >= 14
+            pos[0][0] >= 17 ||
+            pos[0][0] <= -1 ||
+            pos[0][1] <= -1 ||
+            pos[0][1] >= 15
           ) {
-            // alert("Voce perdeu");
+            setDireçao("ArrowRight");
+            setQuantM(0);
+            setTemMaça(false);
             return snake;
           }
           for (let i = 1; i < pos.length; i++) {
             if (pos[0][0] === pos[i][0] && pos[0][1] === pos[i][1]) {
+              setDireçao("ArrowRight");
+              setQuantM(0);
+              setTemMaça(false);
               return snake;
             }
           }
@@ -113,7 +133,7 @@ export default function Campo() {
             if (pos[0][0] + 1 === pos[1][0])
               return [[x - 1, y], ...pos.slice(0, -1)];
             if (m[0] === pos[0][0] && m[1] === pos[0][1]) {
-              setQuantM(quantM + 1);
+              setQuantM(quantRef.current + 1);
               setTemMaça(false);
               return [[x + 1, y], ...pos];
             }
@@ -124,7 +144,7 @@ export default function Campo() {
             if (pos[0][0] - 1 === pos[1][0])
               return [[x + 1, y], ...pos.slice(0, -1)];
             if (m[0] === pos[0][0] && m[1] === pos[0][1]) {
-              setQuantM(quantM + 1);
+              setQuantM(quantRef.current + 1);
               setTemMaça(false);
               return [[x - 1, y], ...pos];
             }
@@ -135,7 +155,7 @@ export default function Campo() {
             if (pos[0][1] - 1 === pos[1][1])
               return [[x, y + 1], ...pos.slice(0, -1)];
             if (m[0] === pos[0][0] && m[1] === pos[0][1]) {
-              setQuantM(quantM + 1);
+              setQuantM(quantRef.current + 1);
               setTemMaça(false);
               return [[x, y - 1], ...pos];
             }
@@ -146,7 +166,7 @@ export default function Campo() {
             if (pos[0][1] + 1 === pos[1][1])
               return [[x, y - 1], ...pos.slice(0, -1)];
             if (m[0] === pos[0][0] && m[1] === pos[0][1]) {
-              setQuantM(quantM + 1);
+              setQuantM(quantRef.current + 1);
               setTemMaça(false);
               return [[x, y + 1], ...pos];
             }
@@ -164,7 +184,9 @@ export default function Campo() {
 
   return (
     <div className="flex  justify-center items-center h-screen">
-      <h1>{quantM}</h1>
+      <div>
+        <h1>{quantM}</h1>
+      </div>
       <canvas ref={canvasRef} width={340} height={300} />
     </div>
   );
