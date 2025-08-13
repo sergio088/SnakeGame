@@ -2,7 +2,6 @@
 import { useState, useEffect, useRef } from "react";
 
 export default function Campo() {
-  const [campo, setCampo] = useState<number[][]>([]);
   const [snakePosiçao, setsnakePosiçao] = useState<number[][]>([
     [8, 8],
     [7, 8],
@@ -61,14 +60,6 @@ export default function Campo() {
     desenharMaça(ctx);
     desenharSnake(ctx, snakePosiçao);
   }, [snakePosiçao]);
-
-  useEffect(() => {
-    const arr = [];
-    for (let i = 0; i < 255; i++) {
-      arr.push([i % 17, Math.floor(i / 17)]);
-    }
-    setCampo(arr);
-  }, []);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
