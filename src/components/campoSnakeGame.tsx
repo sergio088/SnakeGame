@@ -93,7 +93,7 @@ export default function Campo() {
           ];
           const m = maçaRef.current;
           const d = IntervalRef.current;
-          let [x, y] = pos[0];
+          const [x, y] = pos[0];
           if (
             pos[0][0] >= 16 ||
             pos[0][0] <= 0 ||
