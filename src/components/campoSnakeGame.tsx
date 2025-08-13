@@ -26,9 +26,9 @@ export default function Campo() {
     }
   }
 
-  // useEffect(() => {
-  //   snakeRef.current = snakePosiçao;
-  // }, [snakePosiçao]);
+  useEffect(() => {
+    snakeRef.current = snakePosiçao;
+  }, [snakePosiçao]);
 
   function desenharMaça(ctx: CanvasRenderingContext2D | null | undefined) {
     if (!ctx) return;
