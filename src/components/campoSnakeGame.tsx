@@ -46,12 +46,9 @@ export default function Campo() {
       } while (
         snakeRef.current.some((parte) => parte[0] === x && parte[1] === y)
       );
-      if (quantRef.current === 0) {
-        setLocalMaça([11, 8]);
-      } else {
-        setLocalMaça([x, y]);
-      }
+      const apple = quantRef.current === 0 ? [11, 8] : [x, y];
 
+      setLocalMaça(apple);
       setTemMaça(true);
       ctx.fillStyle = "red";
       ctx.fillRect(x * 20, y * 20, 20, 20);
@@ -66,76 +63,6 @@ export default function Campo() {
     snake: number[][],
     size: number
   ) {
-    // const corSnake = "#1E90FF"; // Azul forte
-    // const r = size / 2; // raio pro arredondado
-
-    // snake.forEach((parte, i) => {
-    //   const [x, y] = parte;
-    //   const px = x * size;
-    //   const py = y * size;
-
-    //   ctx!.fillStyle = corSnake;
-
-    //   if (i === 0) {
-    //     // --- Cabeça ---
-    //     ctx!.beginPath();
-    //     // Raio só na frente (top-left e top-right)
-    //     ctx!.roundRect(px, py, size, size, [r, r, 0, 0]);
-    //     ctx!.fill();
-
-    //     // Olhos
-    //     ctx!.fillStyle = "white";
-    //     ctx!.beginPath();
-    //     ctx!.arc(
-    //       px + size * 0.3,
-    //       py + size * 0.35,
-    //       size * 0.15,
-    //       0,
-    //       Math.PI * 2
-    //     );
-    //     ctx!.fill();
-    //     ctx!.beginPath();
-    //     ctx!.arc(
-    //       px + size * 0.7,
-    //       py + size * 0.35,
-    //       size * 0.15,
-    //       0,
-    //       Math.PI * 2
-    //     );
-    //     ctx!.fill();
-
-    //     // Pupilas
-    //     ctx!.fillStyle = "black";
-    //     ctx!.beginPath();
-    //     ctx!.arc(
-    //       px + size * 0.3,
-    //       py + size * 0.35,
-    //       size * 0.07,
-    //       0,
-    //       Math.PI * 2
-    //     );
-    //     ctx!.fill();
-    //     ctx!.beginPath();
-    //     ctx!.arc(
-    //       px + size * 0.7,
-    //       py + size * 0.35,
-    //       size * 0.07,
-    //       0,
-    //       Math.PI * 2
-    //     );
-    //     ctx!.fill();
-    //   } else if (i === snake.length - 1) {
-    //     // --- Cauda ---
-    //     ctx!.beginPath();
-    //     // Raio só atrás (bottom-left e bottom-right)
-    //     ctx!.roundRect(px, py, size, size, [0, 0, r, r]);
-    //     ctx!.fill();
-    //   } else {
-    //     // --- Corpo ---
-    //     ctx!.fillRect(px, py, size, size);
-    //   }
-    // });
-
     ctx!.fillStyle = "#1E90FF";
     snake.forEach(([x, y], p) => {
       ctx!.fillRect(x * size, y * size, size, size);
