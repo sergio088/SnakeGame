@@ -55,11 +55,82 @@ export default function Campo() {
 
   function desenharSnake(
     ctx: CanvasRenderingContext2D | null | undefined,
-    snake: number[][]
+    snake: number[][],
+    size: number
   ) {
-    ctx!.fillStyle = "blue";
+    // const corSnake = "#1E90FF"; // Azul forte
+    // const r = size / 2; // raio pro arredondado
+
+    // snake.forEach((parte, i) => {
+    //   const [x, y] = parte;
+    //   const px = x * size;
+    //   const py = y * size;
+
+    //   ctx!.fillStyle = corSnake;
+
+    //   if (i === 0) {
+    //     // --- Cabeça ---
+    //     ctx!.beginPath();
+    //     // Raio só na frente (top-left e top-right)
+    //     ctx!.roundRect(px, py, size, size, [r, r, 0, 0]);
+    //     ctx!.fill();
+
+    //     // Olhos
+    //     ctx!.fillStyle = "white";
+    //     ctx!.beginPath();
+    //     ctx!.arc(
+    //       px + size * 0.3,
+    //       py + size * 0.35,
+    //       size * 0.15,
+    //       0,
+    //       Math.PI * 2
+    //     );
+    //     ctx!.fill();
+    //     ctx!.beginPath();
+    //     ctx!.arc(
+    //       px + size * 0.7,
+    //       py + size * 0.35,
+    //       size * 0.15,
+    //       0,
+    //       Math.PI * 2
+    //     );
+    //     ctx!.fill();
+
+    //     // Pupilas
+    //     ctx!.fillStyle = "black";
+    //     ctx!.beginPath();
+    //     ctx!.arc(
+    //       px + size * 0.3,
+    //       py + size * 0.35,
+    //       size * 0.07,
+    //       0,
+    //       Math.PI * 2
+    //     );
+    //     ctx!.fill();
+    //     ctx!.beginPath();
+    //     ctx!.arc(
+    //       px + size * 0.7,
+    //       py + size * 0.35,
+    //       size * 0.07,
+    //       0,
+    //       Math.PI * 2
+    //     );
+    //     ctx!.fill();
+    //   } else if (i === snake.length - 1) {
+    //     // --- Cauda ---
+    //     ctx!.beginPath();
+    //     // Raio só atrás (bottom-left e bottom-right)
+    //     ctx!.roundRect(px, py, size, size, [0, 0, r, r]);
+    //     ctx!.fill();
+    //   } else {
+    //     // --- Corpo ---
+    //     ctx!.fillRect(px, py, size, size);
+    //   }
+    // });
+
+    ctx!.fillStyle = "#1E90FF";
     snake.forEach(([x, y]) => {
-      ctx!.fillRect(x * 20, y * 20, 20, 20);
+      ctx!.fillRect(x * size, y * size, size, size);
     });
   }
 
@@ -77,9 +148,10 @@ export default function Campo() {
 
   useEffect(() => {
     const ctx = canvasRef.current?.getContext("2d");
+    const tamanho = 20;
     desenharCampo(ctx);
     desenharMaça(ctx);
-    desenharSnake(ctx, snakePosiçao);
+    desenharSnake(ctx, snakePosiçao, tamanho);
   }, [snakePosiçao]);
 
   useEffect(() => {
