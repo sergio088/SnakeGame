@@ -8,7 +8,7 @@ export default function Campo() {
     [6, 8],
   ]);
   const snakeRef = useRef<number[][]>([]);
-  const [direçao, setDireçao] = useState("ArrowRight");
+  const [direçao, setDireçao] = useState("");
   const IntervalRef = useRef(direçao);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [temMaça, setTemMaça] = useState(false);
@@ -34,13 +34,16 @@ export default function Campo() {
     if (!ctx) return;
 
     if (!temMaça) {
-      const x = Math.floor(Math.random() * 16);
-      const y = Math.floor(Math.random() * 14);
-      snakeRef.current.forEach((p) => {
-        if (p[0] !== x && p[1] !== y) {
-          setLocalMaça([x, y]);
-        }
-      });
+      let x: number;
+      let y: number;
+
+      do {
+        x = Math.floor(Math.random() * 16);
+        y = Math.floor(Math.random() * 14);
+      } while (
+        snakeRef.current.some((parte) => parte[0] === x && parte[1] === y)
+      );
+      setLocalMaça([x, y]);
       setTemMaça(true);
       ctx.fillStyle = "red";
       ctx.fillRect(x * 20, y * 20, 20, 20);
@@ -115,14 +118,14 @@ export default function Campo() {
             pos[0][1] <= -1 ||
             pos[0][1] >= 15
           ) {
-            setDireçao("ArrowRight");
+            setDireçao("");
             setQuantM(0);
             setTemMaça(false);
             return snake;
           }
           for (let i = 1; i < pos.length; i++) {
             if (pos[0][0] === pos[i][0] && pos[0][1] === pos[i][1]) {
-              setDireçao("ArrowRight");
+              setDireçao("");
               setQuantM(0);
               setTemMaça(false);
               return snake;
@@ -192,11 +195,11 @@ export default function Campo() {
           xmlns="http://www.w3.org/2000/svg"
           fill="#000000"
         >
-          <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+          <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
           <g
             id="SVGRepo_tracerCarrier"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           ></g>
           <g id="SVGRepo_iconCarrier">
             <path
