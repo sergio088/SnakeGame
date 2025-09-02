@@ -273,12 +273,6 @@ export default function Campo() {
               >
                 Jogar
               </button>
-              <button
-                className="text-white  border border-transparent bg-blue-950 hover:scale-110 transition-transform duration-300 shadow-2xl px-3 py-2 rounded "
-                type="button"
-              >
-                c
-              </button>
             </div>
           </div>
         </div>
